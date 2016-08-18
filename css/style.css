@@ -21,6 +21,10 @@ ul {
     margin-bottom: 0;
 }
 
+.degrees {
+    font-size: 2em;;
+}
+
 .introduction {
     display: flex;
     flex-direction: row;
