@@ -2,9 +2,11 @@ body {
     font-family: "Franklin Gothic Book","Helvetica Neue",Helvetica,Arial,sans-serif;
     box-sizing: border-box;
 }
+
 table {
     margin: auto;
 }
+
 td {
     padding-top: 1.5em;
     padding-bottom: 1.5em;
@@ -14,15 +16,33 @@ td {
     border-radius: 5px;
 }
 
+ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.introduction {
+    display: flex;
+    flex-direction: row;
+    flex-flow: row wrap;
+    font-weight: 400;
+    color: rgba(35, 31, 32, 0.8);
+}
+
+.introduction h1 {
+    flex: 1 100%
+}
+
 .description {
-    float: left;
     width: 60%;
     margin-right: 20px;
 }
 
-table.key {
-    float: left;
+.key {
     width: 30%;
+}
+
+table.key {
     border: 1px solid #000;
 }
 
@@ -78,11 +98,9 @@ table.key thead td {
     clear: both;
 }
 
-section p {
-    font-size: 1.5em;
-    font-weight: 400;
-    margin-left: 10px;
-    color: rgba(35, 31, 32, 0.8);
+p {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 h1 {
@@ -90,15 +108,19 @@ h1 {
     padding: 0.5em;
     border-radius: 5px;
     color: #fff;
+    margin-top: 0;
 }
 
 h2 {
     color: rgb(206, 5, 56);
 }
 
+h2:first-of-type {
+    margin-top: 0;
+}
+
 section {
     width: 80%;
     margin: auto;
     padding-bottom: 1em;
-    padding-top: 1em;
 }
