@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MSc Computing (Full Time)</title>
+    <style>
+        body {
+            font-family: "Franklin Gothic Book","Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+        table {
+            margin: auto;
+        }
+        td {
+            padding-top: 1.5em;
+            padding-bottom: 1.5em;
+            text-align: center;
+            width: 40%;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+
+        .description {
+            float: left;
+            width: 60%;
+            margin-right: 20px;
+        }
+
+        table.key {
+            float: left;
+            width: 30%;
+            border: 1px solid #000;
+        }
+
+        table.key td {
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
+
+        table.key thead td {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+            border: none;
+            font-weight: 700;
+        }
+
+        .message p {
+            color: rgb(206, 5, 56);
+        }
+
+        .instructions {
+            font-size: 1em;
+        }
+
+        .core {
+            background-color: rgba(200, 187, 141, 0.4);
+        }
+
+        .empty {
+            border: none;
+        }
+
+        .available:hover{
+            background-color: rgba(29, 15, 51, 0.4);
+        }
+
+        .selected {
+            background-color: rgba(0, 154, 68, 0.4);
+        }
+
+        .selected:hover {
+            background-color: rgba(0, 154, 68, 0.6);
+        }
+
+        .unavailable {
+            background-color: rgba(247, 141, 30, 0.4);
+        }
+
+        .unavailable:hover {
+            background-color: rgba(247, 141, 30, 0.4);
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        section p {
+            font-size: 1.5em;
+            font-weight: 400;
+            margin-left: 10px;
+            color: rgba(35, 31, 32, 0.8);
+        }
+
+        h1 {
+            background-color: rgb(21, 44, 81);
+            padding: 0.5em;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        h2 {
+            color: rgb(206, 5, 56);
+        }
+
+        section {
+            width: 80%;
+            margin: auto;
+            padding-bottom: 1em;
+            padding-top: 1em;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <h1>Module Checker, MSc Computing (Full Time)</h1>
+        <div class="description">
+            <h2>Selection Rules:</h2>
+            <p>Students should select either:</p>
+            <ul>
+                <li>CMT102 or CMT302, and one optional Spring Semester Module</li>
+            </ul>
+            <p>or:</p>
+            <ul>
+                <li>Two optional Spring Semester modules</li>
+            </ul>
+            <h2>Instructions</h2>
+            <p class="instructions">Click to select a module. Click a selected module to deselect. Module selections may be restricted due to timetabling clashes or selection rules above.</p>
+        </div>
+    </section>
+    <table class="key">
+        <thead>
+            <tr><td>Key</td></tr>
+        </thead>
+        <tr><td class="core">Core Module</td></tr>
+        <tr><td class="available">Available Module</td></tr>
+        <tr><td class="unavailable">Unavailable Module</td></tr>
+        <tr><td class="selected">Selected Module</td></tr>
+    </table>
+    <section class="clear">
+        <h1>Current Status:</h1>
+        <div class="message">
+
+        </div>
+    </section>
+    <table>
+        <thead>
+            <tr>
+                <th>Autumn Semester</th>
+                <th>Spring Semester</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2" class="core" id="CMT303">CMT303 - Software Engineering</td>
+            </tr>
+            <tr>
+                <td class="available" colspan="2" id="CMT102">CMT102 Computational Systems</td>
+            </tr>
+            <tr>
+                <td class="available" colspan="2" id="CMT302">CMT302 - E-commerce &amp; Innovation</td>
+            </tr>
+            <tr>
+                <td class="core" id="CMT103">CMT103 - Information Processing in Python</td>
+                <td class="core" id="CMT205">CMT205 - Object Oriented Development in Java</td>
+            </tr>
+            <tr>
+                <td class="core" id="CMT112">CMT112 - Web Application Development</td>
+                <td class="available" id="CMT212">CMT212 - Visual Communication &amp; Information Design</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="CMT111">CMT111 - Web &amp; Social Computing</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="CMT202">CMT202 - Distributed &amp; Cloud Computing</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="CMT206">CMT206 - Human Centric Computing</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="CMT207">CMT207 - Information Modelling &amp; Database Systems</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        (function(){
+            var selectedModules = [];
+            var availableModules = ['CMT102', 'CMT302', 'CMT212', 'CMT111', 'CMT202', 'CMT206', 'CMT207'];
+            var unavailableModules = [];
+            var availCopy = [];
+            var numOptions = 2;
+
+            function addId(array, id) {
+                var idx = array.indexOf(id);
+                if(idx === -1) {
+                    array.push(id);
+                }
+            }
+
+            function removeId(array, id) {
+                var idx = array.indexOf(id);
+                if(idx !== -1) {
+                    array.splice(idx, 1);
+                }
+            }
+
+            function setAvailable(mid, isAvail) {
+                if(isAvail) {
+                    addId(availableModules, mid);
+                    removeId(unavailableModules, mid);
+                } else {
+                    addId(unavailableModules, mid);
+                    removeId(availableModules, mid);
+                }
+            }
+
+            function clearMessage() {
+                var msg = document.getElementsByClassName('message');
+                msg[0].innerHTML = '';
+            }
+
+            function addMessage(message) {
+                var msg = document.getElementsByClassName('message');
+                var p = document.createElement('p')
+                var t = document.createTextNode(message);
+                p.appendChild(t);
+                msg[0].appendChild(p);
+            }
+
+            function checkCorrect() {
+                clearMessage();
+                if(selectedModules.length !== numOptions) {
+                    var toSelect = numOptions - selectedModules.length;
+                    var msgString = 'Need to select ' + toSelect + ' more module';
+                    if(toSelect > 1) {
+                        msgString += 's';
+                    }
+                    addMessage(msgString);
+                } else if(selectedModules.length === numOptions) {
+                    if(selectedModules.indexOf('CMT302') === -1 && selectedModules.indexOf('CMT102') === -1) {
+                        addMessage('Two spring semester modules selected - student will need to complete form and have signed by programme leader');
+                    } else {
+                        addMessage('All fine!');
+                    }
+                }
+            }
+
+            function doState(selected){
+
+                if(selectedModules.length === numOptions) {
+                    availCopy = availableModules.slice(0);
+                    for(var i = 0; i < availableModules.length; i++) {
+                        addId(unavailableModules, availableModules[i]);
+                    }
+                    availableModules = [];
+                } else {
+                    for(var i = 0; i < availCopy.length; i++) {
+                        removeId(unavailableModules, availCopy[i]);
+                        addId(availableModules, availCopy[i]);
+                    }
+                    availCopy = [];
+                }
+                console.log('---------dostate--------');
+                console.log('availableModules', availableModules);
+                console.log('availCopy', availCopy);
+                console.log('unavailableModules', unavailableModules);
+                console.log('selectedModules', selectedModules);
+
+                for(var i = 0; i < selectedModules.length; i++){
+                    var m = document.getElementById(selectedModules[i]);
+                    m.classList.add('selected');
+                    m.classList.remove('available');
+                    m.classList.remove('unavailable');
+                }
+                for(var i = 0; i < unavailableModules.length; i++) {
+                    var m = document.getElementById(unavailableModules[i]);
+                    m.classList.add('unavailable');
+                    m.classList.remove('available');
+                    m.classList.remove('selected');
+                }
+                for(var i = 0; i < availableModules.length; i++) {
+                    var m = document.getElementById(availableModules[i]);
+                    m.classList.add('available');
+                    m.classList.remove('unavailable');
+                    m.classList.remove('selected');
+                }
+            }
+
+            var opts = document.getElementsByClassName('available');
+
+            for(var i = 0; i < opts.length; i++) {
+                opts[i].addEventListener('click', function(){
+                    var m = this.id;
+
+                    var m_elem = document.getElementById(m);
+
+                    if (m_elem.classList.contains('unavailable')) {
+                        return;
+                    }
+
+                    if(m_elem.classList.contains('selected')){
+
+                        removeId(selectedModules, m);
+                        addId(availableModules, m);
+
+                        if(m === 'CMT102') {
+                            setAvailable('CMT302', true);
+                        }
+                        if(m === 'CMT302') {
+                            setAvailable('CMT102', true);
+                        }
+                        if(m === 'CMT212') {
+                            setAvailable('CMT206', true);
+                        }
+                        if(m === 'CMT206') {
+                            setAvailable('CMT212', true);
+                        }
+                        if(m === 'CMT111') {
+                            setAvailable('CMT207', true);
+                        }
+                        if(m === 'CMT207') {
+                            setAvailable('CMT111', true);
+                        }
+                    } else {
+                        removeId(availableModules, m);
+                        addId(selectedModules, m);
+
+                        if(m === 'CMT102') {
+                            setAvailable('CMT302', false);
+                        }
+                        if(m === 'CMT302') {
+                            setAvailable('CMT102', false);
+                        }
+                        if(m === 'CMT212') {
+                            setAvailable('CMT206', false);
+                        }
+                        if(m === 'CMT206') {
+                            setAvailable('CMT212', false);
+                        }
+                        if(m === 'CMT111') {
+                            setAvailable('CMT207', false);
+                        }
+                        if(m === 'CMT207') {
+                            setAvailable('CMT111', false);
+                        }
+                    }
+                    doState();
+                    checkCorrect();
+                });
+            }
+            checkCorrect();
+        })();
+    </script>
+</body>
+</html>
