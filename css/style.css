@@ -17,8 +17,8 @@ td {
 }
 
 ul {
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .introduction {
@@ -113,6 +113,13 @@ h1 {
 
 h2 {
     color: rgb(206, 5, 56);
+}
+
+h3 {
+    background-color: rgb(60, 44, 89);
+    padding: 0.5em;
+    border-radius: 5px;
+    color: #fff;
 }
 
 h2:first-of-type {

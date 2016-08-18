@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MSc Advanced Computer Science (Full Time)</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section class="introduction">
+        <h1>Module Checker, MSc Advanced Computer Science (Full Time)</h1>
+        <div class="description">
+            <h2>Selection Rules:</h2>
+            <p>Students should select either:</p>
+            <ul>
+                <li>CMT302 or CMT306, two optional autumn semester and two optional spring semester modules</li>
+            </ul>
+            <p>or:</p>
+            <ul>
+                <li>Three optional autumn semester modules and two spring semester modules. In this case, student will need to submit an 'unbalanced semester load waiver form' which must be signed by programme leader</li>
+            </ul>
+            <p>or:</p>
+            <ul>
+                <li>Two optional autumn semester modules and three spring semester modules. In this case, student will need to submit an 'unbalanced semester load waiver form' which must be signed by programme leader</li>
+            </ul>
+            <p>In all cases, modules should be selected along research themes, so:</p>
+            <ul>
+                <li>CMT106 and CMT202 should be selected together</li>
+                <li>CMT209 and CMT108 should be selected together</li>
+                <li>CMT107 and CMT206 should be selected together</li>
+            </ul>
+            <p>No more than 2 security modules should be selected (CMT105, CMT104, CMT213, CMT306)</p>
+            <h2>Instructions</h2>
+            <p class="instructions">Click to select a module. Click a selected module to deselect. Module selections may be restricted due to timetabling clashes or selection rules above.</p>
+        </div>
+        <table class="key">
+            <thead>
+                <tr><td>Key</td></tr>
+            </thead>
+            <tr><td class="core">Core Module</td></tr>
+            <tr><td class="available">Available Module</td></tr>
+            <tr><td class="unavailable">Unavailable Module</td></tr>
+            <tr><td class="selected">Selected Module</td></tr>
+        </table>
+    </section>
+    <section>
+        <h3>Current Status: <span class="message"></span></h3>
+    </section>
+    <table>
+        <thead>
+            <tr>
+                <th>Autumn Semester</th>
+                <th>Spring Semester</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2" class="core" id="CMT304">CMT304 - Programming Paradigms</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="available" id="CMT302">CMT302 - E-Commerce &amp; Innovation</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="available" id="CMT306">CMT306 - Secure Applications, Identity &amp; Trust</td>
+            </tr>
+            <tr>
+                <td class="available" id="CMT106">CMT106 - High Performance Computing</td>
+                <td class="available" id="CMT202">CMT202 - Distributed &amp; Cloud Computing</td>
+            </tr>
+            <tr>
+                <td class="available" id="CMT209">CMT209 - Informatics</td>
+                <td class="available" id="CMT108">CMT108 - Pattern Recognition &amp; Data Mining</td>
+            </tr>
+            <tr>
+                <td class="available" id="CMT107">CMT107 - Visual Computing</td>
+                <td class="available" id="CMT206">CMT206 - Human Centric Computing</td>
+            </tr>
+            <tr>
+                <td class="available" id="CMT105">CMT105 - Security Techniques</td>
+                <td class="available" id="CMT104">CMT104 - Information, Network &amp; Cyber Security</td>
+            </tr>
+            <tr>
+                <td class="available" id="CMT213">CMT213 - Digital Forensics</td>
+                <td class="available" id="CMT111">CMT111 - Web &amp; Social Computing</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        (function(){
+            var securitySelected = [];
+            var autumnSelected = [];
+            var springSelected = [];
+            var selectedModules = [];
+            var securityModules = ['CMT306', 'CMT105', 'CMT213', 'CMT104'];
+            var autumnModules = ['CMT106', 'CMT209', 'CMT107', 'CMT105', 'CMT213'];
+            var springModules = ['CMT202', 'CMT108', 'CMT206', 'CMT104', 'CMT111'];
+            var availableModules = ['CMT302', 'CMT306', 'CMT106', 'CMT209', 'CMT107', 'CMT105', 'CMT213', 'CMT202', 'CMT108', 'CMT206', 'CMT104', 'CMT111'];
+            var unavailableModules = [];
+            var availCopy = [];
+            var numOptions = 5;
+
+            function addId(array, id) {
+                var idx = array.indexOf(id);
+                if(idx === -1) {
+                    array.push(id);
+                }
+            }
+
+            function removeId(array, id) {
+                var idx = array.indexOf(id);
+                if(idx !== -1) {
+                    array.splice(idx, 1);
+                }
+            }
+
+            function setAvailable(mid, isAvail) {
+                if(isAvail) {
+                    addId(availableModules, mid);
+                    removeId(unavailableModules, mid);
+                } else {
+                    addId(unavailableModules, mid);
+                    removeId(availableModules, mid);
+                }
+            }
+
+            function clearMessage() {
+                var msg = document.getElementsByClassName('message');
+                msg[0].innerHTML = '';
+            }
+
+            function addMessage(message) {
+                var msg = document.getElementsByClassName('message');
+                var t = document.createTextNode(message);
+                msg[0].appendChild(t);
+            }
+
+            function checkCorrect() {
+                clearMessage();
+                if(selectedModules.length !== numOptions) {
+                    var toSelect = numOptions - selectedModules.length;
+                    var msgString = 'Need to select ' + toSelect + ' more module';
+                    if(toSelect > 1) {
+                        msgString += 's';
+                    }
+                    addMessage(msgString);
+                } else if(selectedModules.length === numOptions) {
+                    var streamSelected = false;
+                    if(selectedModules.indexOf('CMT107') !== -1 && selectedModules.indexOf('CMT206') !== -1) {
+                        streamSelected = true;
+                    }
+                    if(selectedModules.indexOf('CMT106') !== -1 && selectedModules.indexOf('CMT202') !== -1) {
+                        streamSelected = true;
+                    }
+                    if(selectedModules.indexOf('CMT209') !== -1 && selectedModules.indexOf('CMT108') !== -1) {
+                        streamSelected = true;
+                    }
+                    if(!streamSelected) {
+                        addMessage(' Need to select modules from one of the research streams');
+                    } else {
+                        if(selectedModules.indexOf('CMT302') === -1 && selectedModules.indexOf('CMT306') === -1) {
+                            addMessage('Three autumn/spring semester modules selected - requires signed form');
+                        } else {
+                            addMessage('All fine!');
+                        }
+                    }
+                }
+            }
+
+            function doState(selected){
+
+                if(selectedModules.length === numOptions) {
+                    availCopy = availableModules.slice(0);
+                    for(var i = 0; i < availableModules.length; i++) {
+                        addId(unavailableModules, availableModules[i]);
+                    }
+                    availableModules = [];
+                } else {
+                    for(var i = 0; i < availCopy.length; i++) {
+                        removeId(unavailableModules, availCopy[i]);
+                        addId(availableModules, availCopy[i]);
+                    }
+                    availCopy = [];
+                }
+                console.log('---------dostate--------');
+                console.log('availableModules', availableModules);
+                console.log('availCopy', availCopy);
+                console.log('unavailableModules', unavailableModules);
+                console.log('selectedModules', selectedModules);
+
+                for(var i = 0; i < selectedModules.length; i++){
+                    var m = document.getElementById(selectedModules[i]);
+                    m.classList.add('selected');
+                    m.classList.remove('available');
+                    m.classList.remove('unavailable');
+                }
+                for(var i = 0; i < unavailableModules.length; i++) {
+                    var m = document.getElementById(unavailableModules[i]);
+                    m.classList.add('unavailable');
+                    m.classList.remove('available');
+                    m.classList.remove('selected');
+                }
+                for(var i = 0; i < availableModules.length; i++) {
+                    var m = document.getElementById(availableModules[i]);
+                    m.classList.add('available');
+                    m.classList.remove('unavailable');
+                    m.classList.remove('selected');
+                }
+            }
+
+            var opts = document.getElementsByClassName('available');
+
+            for(var i = 0; i < opts.length; i++) {
+                opts[i].addEventListener('click', function(){
+                    var m = this.id;
+
+                    var m_elem = document.getElementById(m);
+
+                    if (m_elem.classList.contains('unavailable')) {
+                        return;
+                    }
+
+                    if(m_elem.classList.contains('selected')){
+
+                        removeId(selectedModules, m);
+                        addId(availableModules, m);
+                        if(m === 'CMT106' || m === 'CMT209' || m === 'CMT107' || m === 'CMT105' || m === 'CMT213') {
+                            removeId(autumnSelected, m);
+                            addId(autumnModules, m);
+                            if(autumnSelected.length < 3) {
+                                for(var i = 0; i < autumnModules.length; i++) {
+                                    setAvailable(autumnModules[i], true);
+                                }
+                            }
+                        }
+                        if(m === 'CMT202' || m === 'CMT108' || m === 'CMT206' || m === 'CMT104' || m === 'CMT111') {
+                            removeId(springSelected, m);
+                            addId(springModules, m);
+                            if(springSelected.length < 3) {
+                                for(var i = 0; i < springModules.length; i++) {
+                                    setAvailable(springModules[i], true);
+                                }
+                            }
+                        }
+                        if(m === 'CMT306' || m === 'CMT105' || m === 'CMT104' || m === 'CMT213') {
+                            removeId(securitySelected, m);
+                            addId(securityModules, m);
+                        }
+                        if(securitySelected.length < 2) {
+                            for(var i = 0; i < securityModules.length; i++) {
+                                setAvailable(securityModules[i], true);
+                            }
+                        }
+                        if(m === 'CMT302') {
+                            setAvailable('CMT306', true);
+                        }
+                        if(m === 'CMT306') {
+                            setAvailable('CMT302', true);
+                        }
+                        if(m === 'CMT213') {
+                            setAvailable('CMT106', true);
+                        }
+                        if(m === 'CMT106') {
+                            setAvailable('CMT213', true);
+                        }
+                        if(m === 'CMT105') {
+                            setAvailable('CMT107', true);
+                        }
+                        if(m === 'CMT107') {
+                            setAvailable('CMT105', true);
+                        }
+                        if(m === 'CMT108') {
+                            setAvailable('CMT104', true);
+                        }
+                        if(m === 'CMT104') {
+                            setAvailable('CMT108', true);
+                        }
+
+                    } else {
+                        removeId(availableModules, m);
+                        addId(selectedModules, m);
+                        var toSelect;
+                        if(selectedModules.indexOf('CMT302') === -1 && selectedModules.indexOf('CMT306') === -1) {
+                            toSelect = 3;
+                        } else {
+                            toSelect = 2;
+                        }
+                        if(m === 'CMT106' || m === 'CMT209' || m === 'CMT107' || m === 'CMT105' || m === 'CMT213') {
+                            addId(autumnSelected, m);
+                            removeId(autumnModules, m);
+                        }
+                        if(m === 'CMT202' || m === 'CMT108' || m === 'CMT206' || m === 'CMT104' || m === 'CMT111') {
+                            addId(springSelected, m);
+                            removeId(springModules, m);
+                        }
+                        if(autumnSelected.length >= toSelect) {
+                            for(var i = 0; i < autumnModules.length; i++) {
+                                setAvailable(autumnModules[i], false);
+                            }
+                        }
+                        if(springSelected.length >= toSelect) {
+                            for(var i = 0; i < springModules.length; i++) {
+                                setAvailable(springModules[i], false);
+                            }
+                        }
+                        if(m === 'CMT306' || m === 'CMT105' || m === 'CMT104' || m === 'CMT213') {
+                            addId(securitySelected, m);
+                            removeId(securityModules, m);
+                        }
+                        if(securitySelected.length >= 2) {
+                            for(var i = 0; i < securityModules.length; i++) {
+                                setAvailable(securityModules[i], false);
+                            }
+                        }
+                        if(m === 'CMT302') {
+                            setAvailable('CMT306', false);
+                        }
+                        if(m === 'CMT306') {
+                            setAvailable('CMT302', false);
+                        }
+                        if(m === 'CMT213') {
+                            setAvailable('CMT106', false);
+                        }
+                        if(m === 'CMT106') {
+                            setAvailable('CMT213', false);
+                        }
+                        if(m === 'CMT105') {
+                            setAvailable('CMT107', false);
+                        }
+                        if(m === 'CMT107') {
+                            setAvailable('CMT105', false);
+                        }
+                        if(m === 'CMT108') {
+                            setAvailable('CMT104', false);
+                        }
+                        if(m === 'CMT104') {
+                            setAvailable('CMT108', false);
+                        }
+                    }
+                    doState();
+                    checkCorrect();
+                });
+            }
+            checkCorrect();
+        })();
+    </script>
+</body>
+</html>
