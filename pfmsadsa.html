@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>MSc Advanced Computer Science (Full Time)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -226,29 +225,14 @@
                         if(m === 'CMT106' || m === 'CMT209' || m === 'CMT107' || m === 'CMT105' || m === 'CMT213') {
                             removeId(autumnSelected, m);
                             addId(autumnModules, m);
-                            if(autumnSelected.length < 3) {
-                                for(var i = 0; i < autumnModules.length; i++) {
-                                    setAvailable(autumnModules[i], true);
-                                }
-                            }
                         }
                         if(m === 'CMT202' || m === 'CMT108' || m === 'CMT206' || m === 'CMT104' || m === 'CMT111') {
                             removeId(springSelected, m);
                             addId(springModules, m);
-                            if(springSelected.length < 3) {
-                                for(var i = 0; i < springModules.length; i++) {
-                                    setAvailable(springModules[i], true);
-                                }
-                            }
                         }
                         if(m === 'CMT306' || m === 'CMT105' || m === 'CMT104' || m === 'CMT213') {
                             removeId(securitySelected, m);
                             addId(securityModules, m);
-                        }
-                        if(securitySelected.length < 2) {
-                            for(var i = 0; i < securityModules.length; i++) {
-                                setAvailable(securityModules[i], true);
-                            }
                         }
                         if(m === 'CMT302') {
                             setAvailable('CMT306', true);
@@ -258,23 +242,35 @@
                         }
                         if(m === 'CMT213') {
                             setAvailable('CMT106', true);
+                            addId(autumnModules, 'CMT106');
                         }
                         if(m === 'CMT106') {
                             setAvailable('CMT213', true);
+                            addId(autumnModules, 'CMT213');
                         }
                         if(m === 'CMT105') {
                             setAvailable('CMT107', true);
+                            addId(autumnModules, 'CMT107');
                         }
                         if(m === 'CMT107') {
                             setAvailable('CMT105', true);
+                            addId(autumnModules, 'CMT105');
                         }
                         if(m === 'CMT108') {
                             setAvailable('CMT104', true);
+                            addId(springModules, 'CMT104');
                         }
                         if(m === 'CMT104') {
                             setAvailable('CMT108', true);
+                            addId(springModules, 'CMT108');
                         }
-
+                        if(securitySelected.length < 2) {
+                            for(var i = 0; i < securityModules.length; i++) {
+                                if(unavailableModules.indexOf(securityModules[i]) === -1){
+                                    setAvailable(securityModules[i], true);
+                                }
+                            }
+                        }
                     } else {
                         removeId(availableModules, m);
                         addId(selectedModules, m);
@@ -292,24 +288,9 @@
                             addId(springSelected, m);
                             removeId(springModules, m);
                         }
-                        if(autumnSelected.length >= toSelect) {
-                            for(var i = 0; i < autumnModules.length; i++) {
-                                setAvailable(autumnModules[i], false);
-                            }
-                        }
-                        if(springSelected.length >= toSelect) {
-                            for(var i = 0; i < springModules.length; i++) {
-                                setAvailable(springModules[i], false);
-                            }
-                        }
                         if(m === 'CMT306' || m === 'CMT105' || m === 'CMT104' || m === 'CMT213') {
                             addId(securitySelected, m);
                             removeId(securityModules, m);
-                        }
-                        if(securitySelected.length >= 2) {
-                            for(var i = 0; i < securityModules.length; i++) {
-                                setAvailable(securityModules[i], false);
-                            }
                         }
                         if(m === 'CMT302') {
                             setAvailable('CMT306', false);
@@ -319,21 +300,34 @@
                         }
                         if(m === 'CMT213') {
                             setAvailable('CMT106', false);
+                            removeId(autumnModules, 'CMT106');
                         }
                         if(m === 'CMT106') {
                             setAvailable('CMT213', false);
+                            removeId(autumnModules, 'CMT213');
                         }
                         if(m === 'CMT105') {
                             setAvailable('CMT107', false);
+                            removeId(autumnModules, 'CMT107');
                         }
                         if(m === 'CMT107') {
                             setAvailable('CMT105', false);
+                            removeId(autumnModules, 'CMT105');
                         }
                         if(m === 'CMT108') {
                             setAvailable('CMT104', false);
+                            removeId(springModules, 'CMT104');
                         }
                         if(m === 'CMT104') {
                             setAvailable('CMT108', false);
+                            removeId(springModules, 'CMT108');
+                        }
+                        if(securitySelected.length >= 2) {
+                            for(var i = 0; i < securityModules.length; i++) {
+                                if(availableModules.indexOf(securityModules[i]) === -1) {
+                                    setAvailable(securityModules[i], false);
+                                }
+                            }
                         }
                     }
                     doState();
