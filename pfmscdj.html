@@ -252,6 +252,18 @@
                                 setAvailable(comscModules[i], true);
                             }
                         }
+                        if(m === 'MCT481') {
+                            setAvailable('MCT494', true);
+                        }
+                        if(m === 'MCT494') {
+                            setAvailable('MCT481', true);
+                        }
+                        if(m === 'MCT498') {
+                            setAvailable('CMT111', true);
+                        }
+                        if(m === 'CMT111') {
+                            setAvailable('MCT498', true);
+                        }
 
                     } else {
                         removeId(availableModules, m);
@@ -282,6 +294,18 @@
                             for(var i = 0; i < comscModules.length; i++) {
                                 setAvailable(comscModules[i], false);
                             }
+                        }
+                        if(m === 'MCT481') {
+                            setAvailable('MCT494', false);
+                        }
+                        if(m === 'MCT494') {
+                            setAvailable('MCT481', false);
+                        }
+                        if(m === 'MCT498') {
+                            setAvailable('CMT111', false);
+                        }
+                        if(m === 'CMT111') {
+                            setAvailable('MCT498', false);
                         }
                     }
                     doState();
