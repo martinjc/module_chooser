@@ -219,11 +219,26 @@
                             selectedCredits -= 10;
                         }
                         if(m === 'CMT111') {
-                            setAvailable('MAT005', false);
-                            setAvailable('MAT007', false);
+                            setAvailable('MAT005', true);
+                            setAvailable('MAT007', true);
                         }
                         if(m === 'MAT005') {
-                            setAvailable('CMT111', false);
+                            if(document.getElementById('MAT007').classList.contains('selected')) {
+                                setAvailable('CMT111', false);
+                                removeId(springComscModules, 'CMT111');
+                            } else {
+                                setAvailable('CMT111', true);
+                                addId(springComscModules, 'CMT111');
+                            }
+                        }
+                        if(m === 'MAT007') {
+                            if(document.getElementById('MAT005').classList.contains('selected')) {
+                                setAvailable('CMT111', false);
+                                removeId(springComscModules, 'CMT111');
+                            } else {
+                                setAvailable('CMT111', true);
+                                addId(springComscModules, 'CMT111');
+                            }
                         }
                         if(selectedCredits < creditsToSelect) {
                             for(var i = 0; i < springMathsModules.length; i++) {
@@ -264,6 +279,9 @@
                             setAvailable('MAT007', false);
                         }
                         if(m === 'MAT005') {
+                            setAvailable('CMT111', false);
+                        }
+                        if(m === 'MAT007') {
                             setAvailable('CMT111', false);
                         }
                         if(selectedCredits >= creditsToSelect) {
