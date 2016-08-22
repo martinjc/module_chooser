@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MSc Computational and Data Journalism</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <section class="introduction">
+        <h1>Module Checker, MSc Computational and Data Journalism</h1>
+        <div class="description">
+            <h2>Selection Rules:</h2>
+            <p>Students should select one Computer Science (CMT***) module, and two Journalism (MCT***) modules in the spring semester. Of the Journalism modules, students should select either:</p>
+            <ul>
+                <li>Two modules from MCT481, MCT494, MCT528 and MCT498</li>
+            </ul>
+            <p>or:</p>
+            <ul>
+                <li>One module from MCT481, MCT494, MCT528 and MCT498, and one module from MCT556, MCT554, MCT555, MCT557 and MCT558</li>
+            </ul>
+            <h2>Instructions</h2>
+            <p class="instructions">Click to select a module. Click a selected module to deselect. Module selections may be restricted due to timetabling clashes or selection rules above.</p>
+        </div>
+        <table class="key">
+            <thead>
+                <tr><td>Key</td></tr>
+            </thead>
+            <tr><td class="core">Core Module</td></tr>
+            <tr><td class="available">Available Module</td></tr>
+            <tr><td class="unavailable">Unavailable Module</td></tr>
+            <tr><td class="selected">Selected Module</td></tr>
+        </table>
+    </section>
+    <section>
+        <h3>Current Status: <span class="message"></span></h3>
+    </section>
+    <table>
+        <thead>
+            <tr>
+                <th>Autumn Semester</th>
+                <th>Spring Semester</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="core" id="MCT559">MCT559 - Data Journalism</td>
+                <td class="core" id="MCT542">MCT542 - Digital Investigation</td>
+            </tr>
+            <tr>
+                <td class="core" id="MCT509">MCT509 - Reporters &amp; Reported</td>
+                <td class="available" id="CMT212">CMT212 - Visual Communication &amp; Information Design</td>
+            </tr>
+            <tr>
+                <td class="core" id="CMT112">CMT112 - Web Application Development</td>
+                <td class="available" id="CMT111">CMT111 - Web &amp; Social Computing</td>
+            </tr>
+            <tr>
+                <td class="core" id="CMT103">CMT103 - Information Processing in Python</td>
+                <td class="available" id="CMT206">CMT206 - Human Centric Computing</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT481">MCT481 - Reporting Business, Finance &amp; Economics</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT494">MCT494 - Global Crisis Reporting</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT528">MCT528 - Managing Print in a Digital World</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT498">MCT498 - Reporting Health &amp; Science</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT556">MCT556 - Lifestyle &amp; Consumer Journalism</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT554">MCT554 - Motoring Journalism</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT555">MCT555 - Business &amp; Financial Journalism</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT557">MCT557 - Political Reporting</td>
+            </tr>
+            <tr>
+                <td class="empty"></td>
+                <td class="available" id="MCT558">MCT558 - Sports Journalism</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        (function(){
+            var springSelected = [];
+            var electiveSelected = [];
+            var comscSelected = [];
+            var jomecSelected = [];
+            var selectedModules = [];
+            var springModules = ['MCT481', 'MCT494', 'MCT528', 'MCT498'];
+            var electiveModules = ['MCT556', 'MCT554', 'MCT555', 'MCT557', 'MCT558'];
+            var comscModules = ['CMT212', 'CMT111', 'CMT206'];
+            var jomecModules = ['MCT481', 'MCT494', 'MCT528', 'MCT498', 'MCT556', 'MCT554', 'MCT555', 'MCT557', 'MCT558']
+            var availableModules = ['CMT212', 'CMT111', 'CMT206', 'MCT481', 'MCT494', 'MCT528', 'MCT498', 'MCT556', 'MCT554', 'MCT555', 'MCT557', 'MCT558'];
+            var unavailableModules = [];
+            var availCopy = [];
+            var numOptions = 3;
+
+            function addId(array, id) {
+                var idx = array.indexOf(id);
+                if(idx === -1) {
+                    array.push(id);
+                }
+            }
+
+            function removeId(array, id) {
+                var idx = array.indexOf(id);
+                if(idx !== -1) {
+                    array.splice(idx, 1);
+                }
+            }
+
+            function setAvailable(mid, isAvail) {
+                if(isAvail) {
+                    addId(availableModules, mid);
+                    removeId(unavailableModules, mid);
+                } else {
+                    addId(unavailableModules, mid);
+                    removeId(availableModules, mid);
+                }
+            }
+
+            function clearMessage() {
+                var msg = document.getElementsByClassName('message');
+                msg[0].innerHTML = '';
+            }
+
+            function addMessage(message) {
+                var msg = document.getElementsByClassName('message');
+                var t = document.createTextNode(message);
+                msg[0].appendChild(t);
+            }
+
+            function checkCorrect() {
+                clearMessage();
+                if(selectedModules.length !== numOptions) {
+                    var toSelect = numOptions - selectedModules.length;
+                    var msgString = 'Need to select ' + toSelect + ' more module';
+                    if(toSelect > 1) {
+                        msgString += 's';
+                    }
+                    addMessage(msgString);
+                } else if(selectedModules.length === numOptions) {
+                    addMessage('All fine!');
+                }
+            }
+
+            function doState(selected){
+
+                if(selectedModules.length === numOptions) {
+                    availCopy = availableModules.slice(0);
+                    for(var i = 0; i < availableModules.length; i++) {
+                        addId(unavailableModules, availableModules[i]);
+                    }
+                    availableModules = [];
+                } else {
+                    for(var i = 0; i < availCopy.length; i++) {
+                        removeId(unavailableModules, availCopy[i]);
+                        addId(availableModules, availCopy[i]);
+                    }
+                    availCopy = [];
+                }
+                console.log('---------dostate--------');
+                console.log('availableModules', availableModules);
+                console.log('availCopy', availCopy);
+                console.log('unavailableModules', unavailableModules);
+                console.log('selectedModules', selectedModules);
+
+                for(var i = 0; i < selectedModules.length; i++){
+                    var m = document.getElementById(selectedModules[i]);
+                    m.classList.add('selected');
+                    m.classList.remove('available');
+                    m.classList.remove('unavailable');
+                }
+                for(var i = 0; i < unavailableModules.length; i++) {
+                    var m = document.getElementById(unavailableModules[i]);
+                    m.classList.add('unavailable');
+                    m.classList.remove('available');
+                    m.classList.remove('selected');
+                }
+                for(var i = 0; i < availableModules.length; i++) {
+                    var m = document.getElementById(availableModules[i]);
+                    m.classList.add('available');
+                    m.classList.remove('unavailable');
+                    m.classList.remove('selected');
+                }
+            }
+
+            var opts = document.getElementsByClassName('available');
+
+            for(var i = 0; i < opts.length; i++) {
+                opts[i].addEventListener('click', function(){
+                    var m = this.id;
+
+                    var m_elem = document.getElementById(m);
+
+                    if (m_elem.classList.contains('unavailable')) {
+                        return;
+                    }
+
+                    if(m_elem.classList.contains('selected')){
+
+                        removeId(selectedModules, m);
+                        addId(availableModules, m);
+                        if(m === 'MCT556' || m === 'MCT554' || m === 'MCT555' || m === 'MCT557' || m === 'MCT558') {
+                            addId(electiveModules, m);
+                            removeId(electiveSelected, m);
+                            addId(jomecModules, m);
+                            removeId(jomecSelected, m);
+                            for(var i = 0; i < electiveModules.length; i++) {
+                                setAvailable(electiveModules[i], true)
+                            }
+                        }
+                        if(m === 'MCT481' || m === 'MCT494' || m === 'MCT528' || m === 'MCT528') {
+                            addId(springModules, m);
+                            removeId(springSelected, m);
+                            addId(jomecModules, m);
+                            removeId(jomecSelected, m);
+                        }
+                        if(jomecSelected.length < 2) {
+                            if(electiveSelected.length >= 1) {
+                                for(var i = 0; i < springModules.length; i ++) {
+                                    setAvailable(springModules[i], true);
+                                }
+                            } else {
+                                for(var i = 0; i < jomecModules.length; i++) {
+                                    setAvailable(jomecModules[i], true);
+                                }
+                            }
+                        }
+                        if(m === 'CMT212' || m === 'CMT111' || m === 'CMT206') {
+                            addId(comscModules, m);
+                            removeId(comscSelected, m);
+                            for(var i = 0; i < comscModules.length; i++) {
+                                setAvailable(comscModules[i], true);
+                            }
+                        }
+
+                    } else {
+                        removeId(availableModules, m);
+                        addId(selectedModules, m);
+                        if(m === 'MCT556' || m === 'MCT554' || m === 'MCT555' || m === 'MCT557' || m === 'MCT558') {
+                            addId(electiveSelected, m);
+                            removeId(electiveModules, m);
+                            addId(jomecSelected, m);
+                            removeId(jomecModules, m);
+                            for(var i = 0; i < electiveModules.length; i++) {
+                                setAvailable(electiveModules[i], false)
+                            }
+                        }
+                        if(m === 'MCT481' || m === 'MCT494' || m === 'MCT528' || m === 'MCT528') {
+                            addId(springSelected, m);
+                            removeId(springModules, m);
+                            addId(jomecSelected, m);
+                            removeId(jomecModules, m);
+                        }
+                        if(jomecSelected.length >= 2) {
+                            for(var i = 0; i < jomecModules.length; i++) {
+                                setAvailable(jomecModules[i], false);
+                            }
+                        }
+                        if(m === 'CMT212' || m === 'CMT111' || m === 'CMT206') {
+                            addId(comscSelected, m);
+                            removeId(comscModules, m);
+                            for(var i = 0; i < comscModules.length; i++) {
+                                setAvailable(comscModules[i], false);
+                            }
+                        }
+                    }
+                    doState();
+                    checkCorrect();
+                });
+            }
+            checkCorrect();
+        })();
+    </script>
+</body>
+</html>
