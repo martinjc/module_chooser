@@ -222,6 +222,12 @@
 
                         removeId(selectedModules, m);
                         addId(availableModules, m);
+                        var toSelect;
+                        if(selectedModules.indexOf('CMT302') === -1 && selectedModules.indexOf('CMT306') === -1) {
+                            toSelect = 3;
+                        } else {
+                            toSelect = 2;
+                        }
                         if(m === 'CMT106' || m === 'CMT209' || m === 'CMT107' || m === 'CMT105' || m === 'CMT213') {
                             removeId(autumnSelected, m);
                             addId(autumnModules, m);
@@ -269,6 +275,24 @@
                                 if(unavailableModules.indexOf(securityModules[i]) === -1){
                                     setAvailable(securityModules[i], true);
                                 }
+                            }
+                        }
+                        if(autumnSelected.length < toSelect) {
+                            for(var i = 0; i < autumnModules.length; i++) {
+                                setAvailable(autumnModules[i], true);
+                            }
+                        }
+                        if(springSelected.length < toSelect) {
+                            for(var i = 0; i < springModules.length; i++) {
+                                setAvailable(springModules[i], true);
+                            }
+                        }
+                        if(springSelected.length < 3 && autumnSelected.length < 3) {
+                            if(selectedModules.indexOf('CMT302') === -1 && securitySelected.length < 2 && selectedModules.indexOf('CMT306') === -1) {
+                                setAvailable('CMT306', true);
+                            }
+                            if(selectedModules.indexOf('CMT306') === -1 && selectedModules.indexOf('CMT302') === -1) {
+                                setAvailable('CMT302', true);
                             }
                         }
                     } else {
@@ -324,9 +348,27 @@
                         }
                         if(securitySelected.length >= 2) {
                             for(var i = 0; i < securityModules.length; i++) {
-                                if(availableModules.indexOf(securityModules[i]) === -1) {
+                                if(availableModules.indexOf(securityModules[i]) !== -1) {
                                     setAvailable(securityModules[i], false);
                                 }
+                            }
+                        }
+                        if(autumnSelected.length >= toSelect) {
+                            for(var i = 0; i < autumnModules.length; i++) {
+                                setAvailable(autumnModules[i], false);
+                            }
+                        }
+                        if(springSelected.length >= toSelect) {
+                            for(var i = 0; i < springModules.length; i++) {
+                                setAvailable(springModules[i], false);
+                            }
+                        }
+                        if(springSelected.length === 3 || autumnSelected.length === 3) {
+                            if(availableModules.indexOf('CMT302') !== -1) {
+                                setAvailable('CMT302', false);
+                            }
+                            if(availableModules.indexOf('CMT306') !== -1) {
+                                setAvailable('CMT306', false);
                             }
                         }
                     }
