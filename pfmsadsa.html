@@ -193,16 +193,20 @@
                     m.classList.remove('unavailable');
                 }
                 for(var i = 0; i < unavailableModules.length; i++) {
-                    var m = document.getElementById(unavailableModules[i]);
-                    m.classList.add('unavailable');
-                    m.classList.remove('available');
-                    m.classList.remove('selected');
+                    if(selectedModules.indexOf(unavailableModules[i]) === -1){
+                        var m = document.getElementById(unavailableModules[i]);
+                        m.classList.add('unavailable');
+                        m.classList.remove('available');
+                        m.classList.remove('selected');
+                    }
                 }
                 for(var i = 0; i < availableModules.length; i++) {
-                    var m = document.getElementById(availableModules[i]);
-                    m.classList.add('available');
-                    m.classList.remove('unavailable');
-                    m.classList.remove('selected');
+                    if(selectedModules.indexOf(availableModules[i]) === -1){
+                        var m = document.getElementById(availableModules[i]);
+                        m.classList.add('available');
+                        m.classList.remove('unavailable');
+                        m.classList.remove('selected');
+                    }
                 }
             }
 
@@ -221,7 +225,7 @@
                     if(m_elem.classList.contains('selected')){
 
                         removeId(selectedModules, m);
-                        addId(availableModules, m);
+                        setAvailable(m, true);
                         var toSelect;
                         if(selectedModules.indexOf('CMT302') === -1 && selectedModules.indexOf('CMT306') === -1) {
                             toSelect = 3;
@@ -296,7 +300,7 @@
                             }
                         }
                     } else {
-                        removeId(availableModules, m);
+                        setAvailable(m, false);
                         addId(selectedModules, m);
                         var toSelect;
                         if(selectedModules.indexOf('CMT302') === -1 && selectedModules.indexOf('CMT306') === -1) {
