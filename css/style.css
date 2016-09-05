@@ -98,6 +98,17 @@ table.key thead td {
     background-color: rgba(247, 141, 30, 0.4);
 }
 
+.important {
+    color: rgb(206, 5, 56);
+}
+
+.warning {
+    background-color: rgb(21, 44, 81);
+    padding: 0.5em;
+    border-radius: 5px;
+    color: #fff;
+}
+
 .clear {
     clear: both;
 }

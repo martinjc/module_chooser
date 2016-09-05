@@ -14,6 +14,7 @@
             <p>Students should select one optional spring module</p>
             <h2>Instructions</h2>
             <p class="instructions">Click to select a module. Click a selected module to deselect. Module selections may be restricted due to timetabling clashes or selection rules above.</p>
+            <p class="warning"><span class="important">IMPORTANT!</span> This page only allows you to check whether your selection of modules is valid, it does not count as an official selection! You must still choose your optional modules through SIMS</p>
         </div>
         <table class="key">
             <thead>
@@ -115,7 +116,7 @@
                     }
                     addMessage(msgString);
                 } else if(selectedModules.length === numOptions) {
-                    addMessage('All fine!');
+                    addMessage('All fine! - now submit your choices on SIMS!');
                 }
             }
 
