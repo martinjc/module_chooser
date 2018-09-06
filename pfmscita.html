@@ -11,6 +11,8 @@
         <h1>Module Checker, MSc Computing &amp; IT Management (Full Time)</h1>
         <div class="description">
             <h2>Selection Rules:</h2>
+            <p>Students should select either of CMT114 or CMT115</p>
+            <p>AND</p>
             <p>Students should select one optional spring module</p>
             <h2>Instructions</h2>
             <p class="instructions">Click to select a module. Click a selected module to deselect. Module selections may be restricted due to timetabling clashes or selection rules above.</p>
@@ -45,15 +47,15 @@
             </tr>
 
             <tr>
-                <td class="core" id="CMT103">CMT103 - Information Processing in Python</td>
+                <td class="core" id="CMT112">CMT112 - Web Application Development</td>
                 <td class="core" id="CMT207">CMT207 - Information Modelling &amp; Database Systems</td>
             </tr>
             <tr>
-                <td class="core" id="CMT112">CMT112 - Web Application Development</td>
+                <td class="available" id="CMT114">CMT114 - Python for Data Analysis</td>
                 <td class="available" id="CMT212">CMT212 - Visual Communication &amp; Information Design</td>
             </tr>
             <tr>
-                <td class="empty"></td>
+                <td class="available" id="CMT115">CMT115 - Python for Computation</td>
                 <td class="available" id="CMT202">CMT202 - Distributed &amp; Cloud Computing</td>
             </tr>
             <tr>
@@ -62,14 +64,19 @@
             </tr>
         </tbody>
     </table>
-    <script type="text/javascript" src="js/utils.js"></script>
     <script>
         (function(){
             var selectedModules = [];
-            var availableModules = ['CMT202', 'CMT206', 'CMT212'];
+            var autumnSelected = [];
+            var springSelected = [];
+            var springModules = ['CMT202', 'CMT206', 'CMT212'];
+            var autumnModules = ['CMT114', 'CMT115'];
+            var availableModules = ['CMT114', 'CMT115', 'CMT202', 'CMT206', 'CMT212'];
             var unavailableModules = [];
             var availCopy = [];
-            var numOptions = 1;
+            var numOptions = 2;
+            var numAutumn = 1;
+            var numSpring = 1;
 
             function addId(array, id) {
                 var idx = array.indexOf(id);
@@ -140,6 +147,11 @@
                 console.log('availCopy', availCopy);
                 console.log('unavailableModules', unavailableModules);
                 console.log('selectedModules', selectedModules);
+                console.log('springModules', springModules);
+                console.log('springSelected', springSelected);
+                console.log('autumnModules', autumnModules);
+                console.log('autumnSelected', autumnSelected);
+                
 
                 for(var i = 0; i < selectedModules.length; i++){
                     var m = document.getElementById(selectedModules[i]);
@@ -175,12 +187,57 @@
 
                     if(m_elem.classList.contains('selected')){
 
+                        if(m === 'CMT114' || m === 'CMT115') {
+                            removeId(autumnSelected, m);
+                            addId(autumnModules, m);  
+                        }
+
+                        if(m === 'CMT212' || m === 'CMT202' || m === 'CMT206') {
+                            removeId(springSelected, m);
+                            addId(springModules, m);
+                        }
+
+                        if(autumnSelected.length < numAutumn) {
+                            for(var i = 0; i < autumnModules.length; i++) {
+                                setAvailable(autumnModules[i], true);
+                            }
+                        }
+                        if(springSelected.length < numSpring) {
+                            for(var i = 0; i < springModules.length; i++) {
+                                setAvailable(springModules[i], true);
+                            }
+                        }
+
                         removeId(selectedModules, m);
                         addId(availableModules, m);
 
+
                     } else {
-                        removeId(availableModules, m);
+    
+                        if(m === 'CMT114' || m === 'CMT115') {
+                            addId(autumnSelected, m);
+                            removeId(autumnModules, m);  
+                        }
+
+                        if(m === 'CMT212' || m === 'CMT202' || m === 'CMT206') {
+                            addId(springSelected, m);
+                            removeId(springModules, m);
+                        }
+
+
+                        if(autumnSelected.length >= numAutumn) {
+                            for(var i = 0; i < autumnModules.length; i++) {
+                                setAvailable(autumnModules[i], false);
+                            }
+                        }
+                        if(springSelected.length >= numSpring) {
+                            for(var i = 0; i < springModules.length; i++) {
+                                setAvailable(springModules[i], false);
+                            }
+                        }
+
                         addId(selectedModules, m);
+                        removeId(availableModules, m);
                     }
                     doState();
                     checkCorrect();

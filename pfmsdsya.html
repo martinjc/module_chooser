@@ -11,7 +11,7 @@
         <h1>Module Checker, MSc Data Science &amp; Analytics</h1>
         <div class="description">
             <h2>Selection Rules:</h2>
-            <p>In autumn semester, students should select one Computer Science option (CMT***) from a choice of CMT103, CMT112 and CMT209.</p>
+            <p>In autumn semester, students should select one Computer Science option (CMT***) from a choice of CMT114, CMT112 and CMT209.</p>
             <p>In the spring semester, students should choose a total of 40 credits of optional modules. All optional Computer Science modules (CMT***) are 20 credits. All Mathematics options (MAT***) are 10 credits.</p>
             <h2>Instructions</h2>
             <p class="instructions">Click to select a module. Click a selected module to deselect. Module selections may be restricted due to timetabling clashes or selection rules above.</p>
@@ -51,7 +51,7 @@
                 <td class="available" id="CMT111">CMT111 - Web &amp; Social Computing (20 credits)</td>
             </tr>
             <tr>
-                <td class="available" id="CMT103">CMT103 - Information Processing in Python (20 credits)</td>
+                <td class="available" id="CMT114">CMT114 - Python for Data Analysis (20 credits)</td>
                 <td class="available" id="CMT202">CMT202 - Distributed &amp; Cloud Computing (20 credits)</td>
             </tr>
             <tr>
@@ -78,10 +78,10 @@
             var springComscSelected = [];
             var springMathsSelected = [];
             var selectedModules = [];
-            var autumnModules = ['CMT112', 'CMT103', 'CMT209'];
+            var autumnModules = ['CMT112', 'CMT114', 'CMT209'];
             var springComscModules = ['CMT212', 'CMT111', 'CMT202'];
             var springMathsModules = ['MAT005', 'MAT006', 'MAT007', 'MAT012'];
-            var availableModules = ['CMT112', 'CMT103', 'CMT209', 'CMT212', 'CMT111', 'CMT202', 'MAT005', 'MAT006', 'MAT007', 'MAT012'];
+            var availableModules = ['CMT112', 'CMT114', 'CMT209', 'CMT212', 'CMT111', 'CMT202', 'MAT005', 'MAT006', 'MAT007', 'MAT012'];
             var unavailableModules = [];
             var availCopy = [];
             var numAutumnOptions = 1;
@@ -202,7 +202,7 @@
                         removeId(selectedModules, m);
                         addId(availableModules, m);
 
-                        if(m === 'CMT112' || m === 'CMT103' || m === 'CMT209') {
+                        if(m === 'CMT112' || m === 'CMT114' || m === 'CMT209') {
                             addId(autumnModules, m);
                             removeId(autumnSelected, m);
                             for(var i = 0; i < autumnModules.length; i++) {
@@ -258,7 +258,7 @@
                     } else {
                         removeId(availableModules, m);
                         addId(selectedModules, m);
-                        if(m === 'CMT112' || m === 'CMT103' || m === 'CMT209') {
+                        if(m === 'CMT112' || m === 'CMT114' || m === 'CMT209') {
                             addId(autumnSelected, m);
                             removeId(autumnModules, m);
                             for(var i = 0; i < autumnModules.length; i++) {
